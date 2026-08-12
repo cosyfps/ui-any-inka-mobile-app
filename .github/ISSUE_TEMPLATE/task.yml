@@ -1,0 +1,70 @@
+name: Ticket
+description: Unidad micro de trabajo. Una rama, un PR.
+title: '[T-E.H.T] '
+labels: ['task']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Un **ticket** es la unidad de trabajo real: **1 ticket = 1 rama = 1 PR**
+        (puede tener varios commits). Si no cabe en un PR revisable, divídelo.
+
+        **Excepción:** los tickets sin cambio de lógica (documentación, plantillas,
+        configuración del repo) van directo sobre `develop`. En ese caso escribe
+        `develop (directo)` en el campo Rama.
+
+  - type: input
+    id: historia
+    attributes:
+      label: Historia padre
+      description: Número del issue de la historia.
+      placeholder: '#34'
+    validations:
+      required: true
+
+  - type: input
+    id: rama
+    attributes:
+      label: Rama
+      description: 'Formato: <tipo>/INKA-<épica>.<historia>.<ticket>-<slug>, o "develop (directo)" si no cambia lógica'
+      placeholder: feat/INKA-1.3.1-home-page-scaffold
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Qué hay que hacer
+      description: Alcance concreto. Menciona los archivos que se tocan.
+    validations:
+      required: true
+
+  - type: textarea
+    id: aceptacion
+    attributes:
+      label: Criterios de aceptación
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definición de terminado
+      options:
+        - label: Incluye su `.spec.ts` si agrega código (el gate de coverage es 80%)
+          required: false
+        - label: '`npm run lint && npm run typecheck && npm run test:coverage && npm run build:prod` pasa en local'
+          required: false
+        - label: Evidencia visual adjunta si toca UI
+          required: false
+
+  - type: textarea
+    id: dependencias
+    attributes:
+      label: Bloqueado por
+      description: Tickets que deben mergear antes. Escribe "Ninguno" si no hay.
+    validations:
+      required: true

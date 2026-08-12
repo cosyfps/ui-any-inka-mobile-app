@@ -1,0 +1,46 @@
+name: Historia
+description: Agrupación lógica de tickets dentro de una épica.
+title: '[HU-E.H] '
+labels: ['story']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Una **historia** agrupa los tickets que juntos resuelven una capacidad
+        completa. Tampoco tiene rama propia: las ramas son de los tickets.
+
+  - type: input
+    id: epica
+    attributes:
+      label: Épica padre
+      description: Número del issue de la épica.
+      placeholder: '#12'
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: Qué capacidad entrega esta historia al usuario final.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tickets
+    attributes:
+      label: Tickets
+      description: Checklist de tickets. Enlaza cada issue de ticket.
+      value: |
+        - [ ] #
+        - [ ] #
+    validations:
+      required: true
+
+  - type: textarea
+    id: aceptacion
+    attributes:
+      label: Criterios de aceptación
+      description: Un criterio por línea, verificable.
+    validations:
+      required: true
