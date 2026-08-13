@@ -27,10 +27,12 @@ Home y Catálogo hay que convertirlo en Inka y dejar el pipeline verde. De ahí 
 Tres bloqueos operativos detectados:
 
 1. **CI roto para PRs.** `ci.yml` exige coverage ≥80% y no existe ni un `.spec.ts`.
-2. **Cuenta de `gh` sin permiso de escritura.** `git push` funciona vía SSH como `cosyfps`,
-   pero `gh` está autenticado como `klmoreno_FTC` (`push: false`) y no puede abrir PRs
-   ni issues.
-3. **No existía `develop`**, pese a que ambos workflows ya la referencian.
+   Hoy el gate pasa en verde solo porque Jest no encuentra ninguna suite y nunca llega a
+   evaluar el threshold — en cuanto entre el primer `.spec.ts` empieza a medir de verdad.
+   Lo resuelve HU-0.2.
+2. ~~**Cuenta de `gh` sin permiso de escritura.**~~ Resuelto: `gh auth login` con la cuenta
+   `cosyfps` (`admin: true`). El remote va por SSH (`github-personal`).
+3. ~~**No existía `develop`.**~~ Resuelto en T-0.1.2.
 
 ### Decisiones tomadas
 
@@ -59,7 +61,7 @@ plantillas y el backlog trazable en issues.
 | ------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | T-0.1.1 | _(sin PR)_                | **Bloqueante.** Alinear credenciales: `git remote` por SSH (`github-personal`) y `gh auth login` con la cuenta `cosyfps`. Verificar con `gh api repos/... --jq .permissions`. |
 | T-0.1.2 | _(sin PR)_                | Crear y publicar `develop` desde `main`. Cambiar el default branch de PRs a `develop`.                                                                                        |
-| T-0.1.3 | _(sin PR)_                | Branch protection en `main` y `develop`: required check `ci-gate`, 1 aprobación, sin force-push, sin push directo. Requiere admin.                                            |
+| T-0.1.3 | _(sin PR)_                | Branch protection en `main` y `develop`: required check `ci-gate`, PR obligatorio con **0 aprobaciones**, sin force-push ni borrado de rama. Ver nota de abajo.               |
 | T-0.1.4 | `develop` (directo)       | `pull_request_template.md`, `ISSUE_TEMPLATE/` (epic, story, task, bug), `CODEOWNERS`.                                                                                         |
 | T-0.1.5 | `develop` (directo)       | `CONTRIBUTING.md`: gitflow, ramas, commits, política de merge.                                                                                                                |
 | T-0.1.6 | `develop` (directo)       | Este documento.                                                                                                                                                               |
@@ -69,8 +71,17 @@ plantillas y el backlog trazable en issues.
 T-0.1.4, T-0.1.5 y T-0.1.6 no cambian lógica — solo documentación y plantillas — así que van
 directo sobre `develop` sin rama propia. El PR de T-0.1.8 los agrupa a los tres.
 
+**Nota sobre T-0.1.3 — por qué 0 aprobaciones.** GitHub no permite aprobar tu propio PR.
+En un repo de una sola persona, exigir 1 aprobación bloquearía todos los merges. Se exige
+PR + `ci-gate` en verde, que es lo que realmente protege. Si más adelante entran
+colaboradores, subir el número es un cambio de un campo.
+
+`enforce_admins` queda en `false` a propósito: el owner puede seguir commiteando directo
+sobre `develop` para los tickets sin cambio de lógica. Para cualquier otra cuenta, el push
+directo a `main` y `develop` es rechazado.
+
 **Criterios de aceptación:** el PR `develop` → `main` dispara `ci-gate` y no puede mergear
-sin él; los pushes directos a `main` y `develop` son rechazados.
+sin él; una cuenta no-admin no puede pushear directo a `main` ni a `develop`.
 
 ### HU-0.2 — Desbloquear el gate de coverage
 
@@ -359,32 +370,42 @@ Dentro de cada historia los tickets son secuenciales salvo donde se indique.
 
 Lista plana en orden de trabajo. Estados: ✅ mergeado · 🔄 PR abierto · ⬜ pendiente · 🚫 bloqueado.
 
+Cada ticket tiene su issue en GitHub. Se crean por épica con:
+
+```bash
+bash scripts/create-issues.sh <numero-de-epica>
+```
+
+El script lee `scripts/backlog.tsv`, crea la épica, sus historias y sus tickets ya
+enlazados con checklists, y es idempotente: si vuelves a correrlo tras editar el TSV,
+reutiliza los issues existentes en vez de duplicarlos. Usa `--dry-run` para simular.
+
 ### Épica 0 — Fundación
 
-| #   | Ticket  | Rama                                               | Estado                                                                  |
-| --- | ------- | -------------------------------------------------- | ----------------------------------------------------------------------- |
-| 01  | T-0.1.1 | _(sin PR)_ alinear credenciales git/gh             | 🚫 parcial — `git push` OK por SSH; `gh` sigue sin permiso de escritura |
-| 02  | T-0.1.2 | _(sin PR)_ crear `develop`                         | ✅                                                                      |
-| 03  | T-0.1.4 | `develop` (directo)                                | ✅                                                                      |
-| 04  | T-0.1.5 | `develop` (directo)                                | ✅                                                                      |
-| 05  | T-0.1.6 | `develop` (directo)                                | ✅                                                                      |
-| 06  | T-0.1.8 | PR `develop` → `main`                              | 🔄                                                                      |
-| 07  | T-0.1.3 | _(sin PR)_ branch protection                       | 🚫 requiere admin en `gh`                                               |
-| 08  | T-0.1.7 | _(sin PR)_ crear issues                            | 🚫 requiere escritura en `gh`                                           |
-| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | ⬜                                                                      |
-| 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | ⬜                                                                      |
-| 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | ⬜                                                                      |
-| 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | ⬜                                                                      |
-| 13  | T-0.3.1 | `refactor/INKA-0.3.1-inka-token-rename`            | ⬜                                                                      |
-| 14  | T-0.3.2 | `feat/INKA-0.3.2-inka-color-values`                | ⬜                                                                      |
-| 15  | T-0.4.1 | `chore/INKA-0.4.1-rename-angular-project`          | ⬜                                                                      |
-| —   | T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`            | 🔄 adelantado                                                           |
-| 16  | T-0.4.3 | `docs/INKA-0.4.3-readme`                           | ⬜                                                                      |
-| —   | T-0.4.4 | _(sin PR)_ `CLAUDE.md` local                       | ✅ se mantiene a mano                                                   |
-| 17  | T-0.5.1 | `refactor/INKA-0.5.1-split-mixins-from-components` | ⬜                                                                      |
-| 18  | T-0.5.2 | `fix/INKA-0.5.2-dedupe-state-divider-classes`      | ⬜                                                                      |
-| 19  | T-0.5.3 | `refactor/INKA-0.5.3-scss-use-migration`           | ⬜                                                                      |
-| 20  | T-0.5.4 | `feat/INKA-0.5.4-self-host-inter-font`             | ⬜                                                                      |
+| #   | Ticket  | Rama                                               | Estado                                        |
+| --- | ------- | -------------------------------------------------- | --------------------------------------------- |
+| 01  | T-0.1.1 | _(sin PR)_ alinear credenciales git/gh             | ✅ `gh` = `cosyfps` (admin)                   |
+| 02  | T-0.1.2 | _(sin PR)_ crear `develop`                         | ✅                                            |
+| 03  | T-0.1.4 | `develop` (directo)                                | ✅                                            |
+| 04  | T-0.1.5 | `develop` (directo)                                | ✅                                            |
+| 05  | T-0.1.6 | `develop` (directo)                                | ✅                                            |
+| 06  | T-0.1.8 | PR `develop` → `main`                              | 🔄                                            |
+| 07  | T-0.1.3 | _(sin PR)_ branch protection                       | ✅ `ci-gate` + PR obligatorio, 0 aprobaciones |
+| 08  | T-0.1.7 | _(sin PR)_ crear issues                            | ✅ Épica 0 creada como issues #4 a #31        |
+| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | ⬜                                            |
+| 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | ⬜                                            |
+| 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | ⬜                                            |
+| 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | ⬜                                            |
+| 13  | T-0.3.1 | `refactor/INKA-0.3.1-inka-token-rename`            | ⬜                                            |
+| 14  | T-0.3.2 | `feat/INKA-0.3.2-inka-color-values`                | ⬜                                            |
+| 15  | T-0.4.1 | `chore/INKA-0.4.1-rename-angular-project`          | ⬜                                            |
+| —   | T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`            | 🔄 adelantado                                 |
+| 16  | T-0.4.3 | `docs/INKA-0.4.3-readme`                           | ⬜                                            |
+| —   | T-0.4.4 | _(sin PR)_ `CLAUDE.md` local                       | ✅ se mantiene a mano                         |
+| 17  | T-0.5.1 | `refactor/INKA-0.5.1-split-mixins-from-components` | ⬜                                            |
+| 18  | T-0.5.2 | `fix/INKA-0.5.2-dedupe-state-divider-classes`      | ⬜                                            |
+| 19  | T-0.5.3 | `refactor/INKA-0.5.3-scss-use-migration`           | ⬜                                            |
+| 20  | T-0.5.4 | `feat/INKA-0.5.4-self-host-inter-font`             | ⬜                                            |
 
 ### Épica 1 — Home / Mapa
 
