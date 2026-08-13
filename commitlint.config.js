@@ -2,7 +2,7 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    // Tipos permitidos para FitConnect
+    // Tipos permitidos para Inka
     'type-enum': [
       2,
       'always',
