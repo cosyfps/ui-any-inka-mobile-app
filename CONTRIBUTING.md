@@ -141,18 +141,28 @@ Un PR puede mergear cuando:
 
 1. El check **`ci-gate`** está en verde. Es el único required check: agrega
    `dependencies`, `lint`, `typecheck`, `test` y `build`, y falla si cualquiera de ellos
-   termina en `failure`, `cancelled` o `skipped`.
-2. Tiene **al menos 1 aprobación**.
-3. El cuerpo del PR cierra su issue (`Closes #NN`) y adjunta evidencia visual si toca UI.
+   termina en `failure` o `cancelled`.
+2. El cuerpo del PR cierra su issue (`Closes #NN`) y adjunta evidencia visual si toca UI.
+
+**No se exigen aprobaciones.** GitHub no permite aprobar tu propio PR, así que en un repo
+de una sola persona pedir una aprobación bloquearía todos los merges. Lo que protege de
+verdad es la combinación de PR obligatorio + `ci-gate`. Si más adelante entran
+colaboradores, subir el número es cambiar un campo.
 
 ### Sobre el gate de coverage
 
-El pipeline exige **80% de coverage promedio** (líneas, statements, funciones, ramas).
-Cada PR pasa el gate **por sí solo**, no en conjunto con otros.
+El threshold es **80% en cada una de las 4 métricas** (líneas, statements, funciones,
+ramas), no en su promedio: `coverageThreshold.global` de Jest hace fallar
+`npm run test:coverage` si cualquiera se queda corta. El paso de verificación de `ci.yml`
+además calcula el promedio, así que en la práctica manda la métrica más baja.
 
 La consecuencia práctica: un ticket que agrega código **no puede dejar su spec para
 después** — el gate lo rechazaría. Por eso no existen tickets sueltos de "escribir tests";
 el `.spec.ts` es parte del Definition of Done de cada ticket de código.
+
+La excepción son las historias cuyo objetivo _es_ levantar la cobertura desde cero: sus
+tickets solo cruzan el 80% al final, así que se integran como bloque y no uno por uno.
+Cuando sea el caso, el backlog lo dice explícitamente.
 
 ---
 
@@ -174,6 +184,54 @@ el `.spec.ts` es parte del Definition of Done de cada ticket de código.
 Los colores, radios, sombras y espaciados son variables CSS declaradas en
 `src/app/shared/theme/_palette.scss`. **Nunca hardcodees un color en un componente.**
 Si necesitas un valor que no existe, agrégalo al palette en su propio ticket.
+
+### Nombrado
+
+Archivos en `kebab-case` con sufijo de tipo: `.page.ts`, `.component.ts`, `.service.ts`,
+`.model.ts`, `.spec.ts`. Ejemplos: `artist-catalog.page.ts`, `tattoo-artist.model.ts`.
+
+| Elemento                    | Convención                                   |
+| --------------------------- | -------------------------------------------- |
+| Clases                      | `PascalCase` con sufijo (`ArtistService`)    |
+| Interfaces y types          | `PascalCase` (`TattooArtist`, `TattooStyle`) |
+| Variables y propiedades     | `camelCase`                                  |
+| Selector de página          | prefijo `app-` (`app-artist-catalog`)        |
+| Selector de shared reusable | prefijo `nq-` (pasa a `inka-` en T-0.3.1)    |
+
+### Normalización de strings
+
+Aplica **solo a strings dentro de código TypeScript**: logs, mensajes de error y nombres de
+tests (`it('...')`, `describe('...')`).
+
+- No uses tildes ni eñe en esos strings. Reemplaza: á→a, é→e, í→i, ó→o, ú→u, ñ→n.
+- **No aplica** a la documentación Markdown (este archivo, `README.md`, `docs/`), que debe
+  usar ortografía correcta en español.
+- **No aplica** al texto visible en los templates, que sigue el idioma del diseño de cada
+  pantalla.
+
+El motivo es evitar inconsistencias de encoding entre entornos (CI, terminales) en strings
+que se procesan en runtime.
+
+---
+
+## Testing
+
+- Jest con `jest-preset-angular`, configurado inline en `package.json`. Setup en
+  `setup-jest.ts`.
+- Los specs viven junto al archivo que prueban: `start.page.spec.ts` al lado de
+  `start.page.ts`.
+- `@testing-library/angular` es la vía preferida para tests de componentes.
+- Prueba comportamiento observable — signals computados, salida del template, handlers —,
+  no detalles internos de implementación.
+- Los nombres de tests van sin tildes (ver normalización de strings, arriba).
+
+```bash
+npm run test:coverage
+```
+
+```bash
+npx jest src/app/pages/start/start.page.spec.ts
+```
 
 ---
 
