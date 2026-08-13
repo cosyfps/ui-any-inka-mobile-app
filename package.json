@@ -67,7 +67,7 @@
   },
   "jest": {
     "preset": "jest-preset-angular",
-    "setupFiles": [
+    "setupFilesAfterEnv": [
       "<rootDir>/setup-jest.ts"
     ],
     "testPathIgnorePatterns": [
@@ -75,12 +75,20 @@
       "/dist/",
       "/e2e/"
     ],
+    "moduleNameMapper": {
+      "^ionicons/components/(.*)$": "<rootDir>/node_modules/ionicons/components/$1"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(.*\\.mjs$|@angular/common/locales/.*\\.js$|@ionic/|ionicons/|@stencil/|@lucide/))"
+    ],
     "collectCoverageFrom": [
       "src/**/*.ts",
       "!src/**/*.module.ts",
       "!src/**/*.routes.ts",
       "!src/main.ts",
-      "!src/environments/**"
+      "!src/environments/**",
+      "!src/**/*.model.ts",
+      "!src/app/shared/mocks/**"
     ],
     "coverageThreshold": {
       "global": {
