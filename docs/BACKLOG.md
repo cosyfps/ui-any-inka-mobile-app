@@ -55,17 +55,16 @@ Tres bloqueos operativos detectados:
 Deja el repositorio listo para recibir trabajo: rama de integración, protecciones,
 plantillas y el backlog trazable en issues.
 
-| Ticket  | Rama                | Qué hace                                                                                                                                                                      |
-| ------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| T-0.1.1 | _(sin PR)_          | **Bloqueante.** Alinear credenciales: `git remote` por SSH (`github-personal`) y `gh auth login` con la cuenta `cosyfps`. Verificar con `gh api repos/... --jq .permissions`. |
-| T-0.1.2 | _(sin PR)_          | Crear y publicar `develop` desde `main`. Cambiar el default branch de PRs a `develop`.                                                                                        |
-| T-0.1.3 | _(sin PR)_          | Branch protection en `main` y `develop`: required check `ci-gate`, 1 aprobación, sin force-push, sin push directo. Requiere admin.                                            |
-| T-0.1.4 | `develop` (directo) | `pull_request_template.md`, `ISSUE_TEMPLATE/` (epic, story, task, bug), `CODEOWNERS`.                                                                                         |
-| T-0.1.5 | `develop` (directo) | `CONTRIBUTING.md`: gitflow, ramas, commits, política de merge.                                                                                                                |
-| T-0.1.6 | `develop` (directo) | Este documento.                                                                                                                                                               |
-| T-0.1.7 | _(sin PR)_          | Crear los issues con `gh issue create`: épicas e historias como issues padre con checklist, un issue por ticket. Labels `epic`, `story`, `task`, `blocked`.                   |
-
-| T-0.1.8 | **PR `develop` → `main`** | Bootstrap del gitflow: lleva a `main` la infraestructura de T-0.1.4/0.1.5/0.1.6 y valida que `ci-gate` corre y bloquea. Único PR a `main` que no viene de `release/*`. |
+| Ticket  | Rama                      | Qué hace                                                                                                                                                                      |
+| ------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T-0.1.1 | _(sin PR)_                | **Bloqueante.** Alinear credenciales: `git remote` por SSH (`github-personal`) y `gh auth login` con la cuenta `cosyfps`. Verificar con `gh api repos/... --jq .permissions`. |
+| T-0.1.2 | _(sin PR)_                | Crear y publicar `develop` desde `main`. Cambiar el default branch de PRs a `develop`.                                                                                        |
+| T-0.1.3 | _(sin PR)_                | Branch protection en `main` y `develop`: required check `ci-gate`, 1 aprobación, sin force-push, sin push directo. Requiere admin.                                            |
+| T-0.1.4 | `develop` (directo)       | `pull_request_template.md`, `ISSUE_TEMPLATE/` (epic, story, task, bug), `CODEOWNERS`.                                                                                         |
+| T-0.1.5 | `develop` (directo)       | `CONTRIBUTING.md`: gitflow, ramas, commits, política de merge.                                                                                                                |
+| T-0.1.6 | `develop` (directo)       | Este documento.                                                                                                                                                               |
+| T-0.1.7 | _(sin PR)_                | Crear los issues con `gh issue create`: épicas e historias como issues padre con checklist, un issue por ticket. Labels `epic`, `story`, `task`, `blocked`.                   |
+| T-0.1.8 | **PR `develop` → `main`** | Bootstrap del gitflow: lleva a `main` la infraestructura de T-0.1.4/0.1.5/0.1.6 y valida que `ci-gate` corre y bloquea. Único PR a `main` que no viene de `release/*`.        |
 
 T-0.1.4, T-0.1.5 y T-0.1.6 no cambian lógica — solo documentación y plantillas — así que van
 directo sobre `develop` sin rama propia. El PR de T-0.1.8 los agrupa a los tres.
@@ -182,12 +181,34 @@ activos: todo acceso indexado devuelve `T | undefined`. Modelar con eso desde el
 
 ### HU-1.2 — Shell de layout + bottom nav
 
-| Ticket  | Rama                                        | Qué hace                                                                                                                                                    |
-| ------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| T-1.2.1 | `feat/INKA-1.2.1-main-layout-shell`         | Extraer el patrón de `trainer-layout.page.ts` a un `MainLayoutPage` reutilizable: `toSignal` sobre `NavigationEnd` + `isActive()`/`navigate()`. **+ spec.** |
-| T-1.2.2 | `feat/INKA-1.2.2-bottom-nav-tabs`           | 4 tabs: Home, Explorar, Favoritos, Chat (iconos Lucide individuales).                                                                                       |
-| T-1.2.3 | `feat/INKA-1.2.3-child-routes-placeholders` | Rutas hijas en `app.routes.ts`; Explorar/Favoritos/Chat usan el `page-state.component.ts` existente como placeholder.                                       |
-| T-1.2.4 | `fix/INKA-1.2.4-ios-safe-area-tabs`         | `env(safe-area-inset-bottom)` sobre `--inka-tab-height` / `--inka-tab-bottom`.                                                                              |
+| Ticket  | Rama                                        | Qué hace                                                                                                              |
+| ------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| T-1.2.1 | `feat/INKA-1.2.1-main-layout-shell`         | `MainLayoutPage` reutilizable con el patrón de tab activa que se conserva abajo. **+ spec.**                          |
+| T-1.2.2 | `feat/INKA-1.2.2-bottom-nav-tabs`           | 4 tabs: Home, Explorar, Favoritos, Chat (iconos Lucide individuales).                                                 |
+| T-1.2.3 | `feat/INKA-1.2.3-child-routes-placeholders` | Rutas hijas en `app.routes.ts`; Explorar/Favoritos/Chat usan el `page-state.component.ts` existente como placeholder. |
+| T-1.2.4 | `fix/INKA-1.2.4-ios-safe-area-tabs`         | `env(safe-area-inset-bottom)` sobre `--inka-tab-height` / `--inka-tab-bottom`.                                        |
+
+#### Patrón de tab activa (conservado de `trainer-layout.page.ts`)
+
+T-0.4.2 eliminó `src/app/pages/trainer/`, que era el único lugar donde vivía este patrón.
+Se conserva aquí porque T-1.2.1 lo reimplementa en `MainLayoutPage`:
+
+```ts
+private readonly activeTab = toSignal(
+  this.router.events.pipe(
+    filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+    map(e => e.urlAfterRedirects.split('?')[0]),
+  ),
+  { initialValue: this.router.url.split('?')[0] },
+);
+
+isActive(path: string): boolean {
+  return this.activeTab()?.startsWith(path) ?? false;
+}
+```
+
+El `?? false` no es opcional: `noUncheckedIndexedAccess` hace que `split('?')[0]` sea
+`string | undefined`, así que `activeTab()` puede ser `undefined`.
 
 ### HU-1.3 — Header compacto + chips de estilo
 
