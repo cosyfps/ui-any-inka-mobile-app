@@ -87,16 +87,46 @@ sin él; una cuenta no-admin no puede pushear directo a `main` ni a `develop`.
 
 El pipeline exige 80% y no hay tests. Esta historia lo deja en verde con cobertura real.
 
-| Ticket  | Rama                                    | Qué hace                                                                                                                                                                                                                             |
-| ------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`         | `tsconfig.spec.json`: `"types": ["jasmine"]` → `["jest"]`. Eliminar el target `test` con builder Karma de `angular.json` (muerto). Añadir a `collectCoverageFrom` las exclusiones `!src/**/*.model.ts` y `!src/app/shared/mocks/**`. |
-| T-0.2.2 | `test/INKA-0.2.2-start-page-specs`      | Specs de `StartPage`: validación de email, las 4 reglas de password, `formValid`, toggle del panel de login, `isSubmitting`.                                                                                                         |
-| T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs` | Specs de `ForgotPasswordPage`: OTP auto-advance, backspace, paste de 6 dígitos, countdown de reenvío, enmascarado de email.                                                                                                          |
-| T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`          | El agregador ignora los jobs en estado `skipped` y reporta verde. Cambiar el patrón a `(failure\|cancelled\|skipped)`.                                                                                                               |
+| Ticket  | Rama                                    | Qué hace                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`         | Dejar la config de Jest realmente operativa. `tsconfig.spec.json`: `"types": ["jasmine"]` → `["jest"]` + `esModuleInterop`. Eliminar el target `test` con builder Karma de `angular.json` (muerto). En `package.json`: `setupFiles` → `setupFilesAfterEnv`, ampliar `transformIgnorePatterns`, añadir `moduleNameMapper` para `ionicons/components/*` y las exclusiones `!src/**/*.model.ts` y `!src/app/shared/mocks/**` en `collectCoverageFrom`. `setup-jest.ts` → `setupZoneTestEnv()`. |
+| T-0.2.2 | `test/INKA-0.2.2-start-page-specs`      | Specs de `StartPage`: validación de email, las 4 reglas de password, `formValid`, toggle del panel de login, `isSubmitting`.                                                                                                                                                                                                                                                                                                                                                                |
+| T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs` | Specs de `ForgotPasswordPage`: OTP auto-advance, backspace, paste de 6 dígitos, countdown de reenvío, enmascarado de email.                                                                                                                                                                                                                                                                                                                                                                 |
+| T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`          | Dos falsos verdes. (1) El agregador ignora los jobs en estado `skipped`: cambiar el patrón a `(failure\|cancelled\|skipped)`. (2) El paso "Verify coverage threshold" de `ci.yml` da `NaN` y pasa igual — ver nota abajo.                                                                                                                                                                                                                                                                   |
 
 **Por qué las exclusiones de T-0.2.1:** los mocks de la Épica 1 son arrays constantes sin
 funciones. Si entran al denominador de coverage con 0%, hunden el promedio de las 4 métricas
 sin que haya nada real que testear.
+
+#### Los tres bugs de T-0.2.1 que no eran evidentes
+
+La config de Jest nunca se había ejecutado. Además de los residuos de Karma/Jasmine, había
+tres fallos que impedían correr **cualquier** spec, detectados al validar el ticket con un
+spec temporal:
+
+1. **`setupFiles` en vez de `setupFilesAfterEnv`.** `setupFiles` corre antes de que existan
+   los globals de Jest, así que `zone-testing` fallaba al parchear `jest.each` con
+   `TypeError: Cannot read properties of undefined (reading 'each')`. Reventaba toda suite.
+2. **`transformIgnorePatterns` demasiado estrecho.** `@ionic/core` publica ESM en archivos
+   `.js` y el patrón del preset solo exceptúa `.mjs` y los locales de Angular, así que
+   cualquier spec que importara una página moría con `SyntaxError: Unexpected token 'export'`.
+3. **`ionicons/components/ion-icon.js` no resolvía.** ionicons 8 expone ese subpath solo
+   bajo la condición `import` y Jest resuelve con `require`/`default`. Se arregla con un
+   `moduleNameMapper` acotado; **no** con `customExportConditions`, que es global y rompe
+   `dedent`, una dependencia interna de Jest.
+
+**T-0.2.1 no lleva specs a propósito.** Con cero suites, Jest sale temprano y
+`collectCoverageFrom` nunca se aplica. En cuanto exista un solo spec la recolección se
+activa de verdad, el coverage real cae a ~5% y el `coverageThreshold` de 80% hace fallar
+`npm run test:coverage`. La cobertura la aportan T-0.2.2 y T-0.2.3.
+
+#### El segundo falso verde de T-0.2.4
+
+El paso "Verify coverage threshold" de `ci.yml` promedia las 4 métricas de
+`coverage/coverage-summary.json`. Sin tests, Jest escribe un summary vacío donde cada `pct`
+es el string `"Unknown"`, así que el cálculo da `NaN`; como `NaN < 80` es `false`, el job
+imprime `OK: Coverage NaN% >= 80%` y pasa. T-0.2.4 debe validar que el summary traiga
+archivos y que las 4 métricas sean numéricas antes de comparar.
 
 **Orden:** T-0.2.1 primero. La historia va antes de HU-0.4 para no escribir specs de páginas
 que después se borran.
@@ -392,7 +422,7 @@ reutiliza los issues existentes en vez de duplicarlos. Usa `--dry-run` para simu
 | 06  | T-0.1.8 | PR `develop` → `main`                              | 🔄                                            |
 | 07  | T-0.1.3 | _(sin PR)_ branch protection                       | ✅ `ci-gate` + PR obligatorio, 0 aprobaciones |
 | 08  | T-0.1.7 | _(sin PR)_ crear issues                            | ✅ Épica 0 creada como issues #4 a #31        |
-| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | ⬜                                            |
+| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | ✅ +3 bugs no documentados (ver HU-0.2)       |
 | 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | ⬜                                            |
 | 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | ⬜                                            |
 | 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | ⬜                                            |
