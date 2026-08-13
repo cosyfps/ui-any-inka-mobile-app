@@ -419,23 +419,45 @@ reutiliza los issues existentes en vez de duplicarlos. Usa `--dry-run` para simu
 | 03  | T-0.1.4 | `develop` (directo)                                | ✅                                            |
 | 04  | T-0.1.5 | `develop` (directo)                                | ✅                                            |
 | 05  | T-0.1.6 | `develop` (directo)                                | ✅                                            |
-| 06  | T-0.1.8 | PR `develop` → `main`                              | 🔄                                            |
+| 06  | T-0.1.8 | PR `develop` → `main`                              | 🔄 PR #2 — arrastra tambien T-0.4.3           |
 | 07  | T-0.1.3 | _(sin PR)_ branch protection                       | ✅ `ci-gate` + PR obligatorio, 0 aprobaciones |
 | 08  | T-0.1.7 | _(sin PR)_ crear issues                            | ✅ Épica 0 creada como issues #4 a #31        |
-| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | ✅ +3 bugs no documentados (ver HU-0.2)       |
-| 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | ⬜                                            |
-| 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | ⬜                                            |
-| 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | ⬜                                            |
+| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | 🔄 PR #32 — +3 bugs no documentados           |
+| 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | 🔄 PR #33 — 22 tests                          |
+| 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | 🔄 PR #34 — 34 tests                          |
+| 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | 🔄 PR #35 — mergea el ultimo                  |
 | 13  | T-0.3.1 | `refactor/INKA-0.3.1-inka-token-rename`            | ⬜                                            |
 | 14  | T-0.3.2 | `feat/INKA-0.3.2-inka-color-values`                | ⬜                                            |
 | 15  | T-0.4.1 | `chore/INKA-0.4.1-rename-angular-project`          | ⬜                                            |
-| —   | T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`            | 🔄 adelantado                                 |
-| 16  | T-0.4.3 | `docs/INKA-0.4.3-readme`                           | ⬜                                            |
+| —   | T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`            | 🔄 PR #3 — prerrequisito de HU-0.2            |
+| 16  | T-0.4.3 | _(sin rama)_ `README.md` dentro del PR #2          | 🔄 adelantado, viaja en el PR #2              |
 | —   | T-0.4.4 | _(sin PR)_ `CLAUDE.md` local                       | ✅ se mantiene a mano                         |
 | 17  | T-0.5.1 | `refactor/INKA-0.5.1-split-mixins-from-components` | ⬜                                            |
 | 18  | T-0.5.2 | `fix/INKA-0.5.2-dedupe-state-divider-classes`      | ⬜                                            |
 | 19  | T-0.5.3 | `refactor/INKA-0.5.3-scss-use-migration`           | ⬜                                            |
 | 20  | T-0.5.4 | `feat/INKA-0.5.4-self-host-inter-font`             | ⬜                                            |
+
+#### Orden de merge de HU-0.2
+
+Los cuatro PRs de la historia van **apilados**: cada rama nace de la anterior porque todas
+necesitan la configuración de Jest de T-0.2.1. GitHub reapunta cada PR a `develop` a medida
+que el anterior mergea.
+
+```
+#32 (T-0.2.1) → #33 (T-0.2.2) → #34 (T-0.2.3) → #3 (T-0.4.2) → #35 (T-0.2.4)
+```
+
+Dos restricciones que no son negociables:
+
+1. **#3 entra antes que #35.** `dashboard.page.ts` y `trainer-layout.page.ts` suman 235
+   statements sin un solo test. Con ellos dentro del denominador la historia se queda en
+   75.86% de statements; sin ellos sube a 88.44% y las 4 métricas pasan.
+2. **#35 mergea el último.** Endurece el guard de coverage para que un reporte vacío sea
+   fallo explícito. Si entra antes que los specs, bloquea `develop` por completo.
+
+Ningún PR de la cadena puede pasar `ci-gate` por sí solo: la historia se integra como
+bloque. Es la excepción prevista en `CONTRIBUTING.md` para historias que levantan la
+cobertura desde cero.
 
 ### Épica 1 — Home / Mapa
 
