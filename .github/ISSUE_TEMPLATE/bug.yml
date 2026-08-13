@@ -1,0 +1,49 @@
+name: Bug
+description: Algo no funciona como debería.
+title: '[BUG] '
+labels: ['bug']
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Qué pasa
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduccion
+    attributes:
+      label: Cómo reproducirlo
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué debería pasar
+    validations:
+      required: true
+
+  - type: dropdown
+    id: plataforma
+    attributes:
+      label: Dónde ocurre
+      multiple: true
+      options:
+        - Navegador (ng serve)
+        - Android (Capacitor)
+        - iOS (Capacitor)
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto adicional
+      description: Logs, screenshots, rama o commit donde aparece.
+    validations:
+      required: false

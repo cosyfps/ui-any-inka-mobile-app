@@ -1,0 +1,45 @@
+name: Épica
+description: Objetivo macro que agrupa varias historias.
+title: '[ÉPICA N] '
+labels: ['epic']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Una **épica** es un objetivo macro. Se divide en historias, y cada historia
+        en tickets. Una épica no se implementa directamente: no tiene rama propia.
+
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+      description: Qué resuelve esta épica y por qué existe.
+    validations:
+      required: true
+
+  - type: textarea
+    id: historias
+    attributes:
+      label: Historias
+      description: Checklist de historias. Enlaza cada issue de historia.
+      value: |
+        - [ ] #
+        - [ ] #
+    validations:
+      required: true
+
+  - type: textarea
+    id: aceptacion
+    attributes:
+      label: Definición de terminado
+      description: Cómo se verifica que la épica completa está cerrada.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencias
+    attributes:
+      label: Dependencias
+      description: Épicas o historias que deben cerrarse antes. Escribe "Ninguna" si no hay.
+    validations:
+      required: true

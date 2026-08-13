@@ -1,0 +1,97 @@
+# Fuente de datos para scripts/create-issues.sh
+# Formato: tipo <TAB> id <TAB> rama <TAB> titulo
+# tipo: E = epica, H = historia, T = ticket
+# El detalle completo de cada item vive en docs/BACKLOG.md
+E	0	-	Fundacion, Identidad Inka y Desbloqueo de CI
+H	0.1	-	Infraestructura de Gitflow
+T	0.1.1	(sin PR)	Alinear credenciales de git y gh
+T	0.1.2	(sin PR)	Crear y publicar la rama develop
+T	0.1.3	(sin PR)	Configurar branch protection en main y develop
+T	0.1.4	develop (directo)	Agregar plantillas de PR e issues y CODEOWNERS
+T	0.1.5	develop (directo)	Documentar el gitflow en CONTRIBUTING.md
+T	0.1.6	develop (directo)	Publicar docs/BACKLOG.md
+T	0.1.7	(sin PR)	Crear los issues del backlog en GitHub
+T	0.1.8	PR develop -> main	Bootstrap del gitflow hacia main
+H	0.2	-	Desbloquear el gate de coverage
+T	0.2.1	ci/INKA-0.2.1-jest-config-fix	Arreglar la configuracion de Jest y las exclusiones de coverage
+T	0.2.2	test/INKA-0.2.2-start-page-specs	Escribir los specs de StartPage
+T	0.2.3	test/INKA-0.2.3-forgot-password-specs	Escribir los specs de ForgotPasswordPage
+T	0.2.4	ci/INKA-0.2.4-harden-ci-gate	Tratar los jobs skipped como fallo en ci-gate
+H	0.3	-	Design tokens Inka
+T	0.3.1	refactor/INKA-0.3.1-inka-token-rename	Renombrar los tokens --nq-* a --inka-*
+T	0.3.2	feat/INKA-0.3.2-inka-color-values	Aplicar los valores de color de Inka
+H	0.4	-	Rebrand del proyecto y limpieza de Neque
+T	0.4.1	chore/INKA-0.4.1-rename-angular-project	Renombrar el proyecto Angular y la app de Capacitor
+T	0.4.2	chore/INKA-0.4.2-remove-trainer-pages	Eliminar las paginas heredadas de Neque
+T	0.4.3	docs/INKA-0.4.3-readme	Escribir el README del proyecto
+T	0.4.4	(sin PR)	Mantener CLAUDE.md alineado con el rebrand
+H	0.5	-	Higiene del sistema de estilos
+T	0.5.1	refactor/INKA-0.5.1-split-mixins-from-components	Separar los mixins de las clases globales del theme
+T	0.5.2	fix/INKA-0.5.2-dedupe-state-divider-classes	Resolver las clases duplicadas entre components y utilities
+T	0.5.3	refactor/INKA-0.5.3-scss-use-migration	Migrar styles.scss de import a use
+T	0.5.4	feat/INKA-0.5.4-self-host-inter-font	Cargar la fuente Inter o quitarla del token
+E	1	-	Home: Mapa de Descubrimiento
+H	1.1	-	Modelo de dominio y datos mock
+T	1.1.1	feat/INKA-1.1.1-tattoo-artist-model	Definir el modelo TattooArtist y sus tipos
+T	1.1.2	feat/INKA-1.1.2-mock-artists	Crear los 6 tatuadores mock de Santiago
+T	1.1.3	feat/INKA-1.1.3-artist-service	Implementar ArtistService sobre el mock
+H	1.2	-	Shell de layout y bottom nav
+T	1.2.1	feat/INKA-1.2.1-main-layout-shell	Crear MainLayoutPage con el patron de tab activa
+T	1.2.2	feat/INKA-1.2.2-bottom-nav-tabs	Agregar los 4 tabs Home Explorar Favoritos Chat
+T	1.2.3	feat/INKA-1.2.3-child-routes-placeholders	Definir las rutas hijas con placeholders
+T	1.2.4	fix/INKA-1.2.4-ios-safe-area-tabs	Respetar la safe area inferior en iOS
+H	1.3	-	Header compacto y chips de estilo
+T	1.3.1	feat/INKA-1.3.1-home-page-scaffold	Crear HomePage con su ruta lazy
+T	1.3.2	feat/INKA-1.3.2-home-compact-header	Construir el header compacto con busqueda y avatar
+T	1.3.3	feat/INKA-1.3.3-style-chips-scroller	Agregar los chips de estilo scrollables
+T	1.3.4	feat/INKA-1.3.4-artist-filter-signal	Filtrar artistas por chip y texto de busqueda
+H	1.4	-	Integracion Mapbox
+T	1.4.1	chore/INKA-1.4.1-add-mapbox-dependency	Agregar mapbox-gl y sus tipos
+T	1.4.2	ci/INKA-1.4.2-environment-file-replacements	Configurar el token de Mapbox y fileReplacements
+T	1.4.3	feat/INKA-1.4.3-map-init-outside-zone	Inicializar el mapa fuera de la zona de Angular
+T	1.4.4	feat/INKA-1.4.4-custom-map-style	Aplicar el estilo de mapa claro y desaturado
+T	1.4.5	feat/INKA-1.4.5-map-loading-error-states	Manejar los estados de carga y error del mapa
+T	1.4.6	perf/INKA-1.4.6-verify-lazy-chunk-budgets	Verificar que mapbox no entra al bundle inicial
+H	1.5	-	Marcadores y clustering
+T	1.5.1	feat/INKA-1.5.1-artist-bubble-marker	Dibujar los marcadores burbuja de tatuadores
+T	1.5.2	feat/INKA-1.5.2-supercluster-clustering	Agrupar marcadores cercanos con supercluster
+T	1.5.3	feat/INKA-1.5.3-cluster-badge-zoom	Mostrar el badge +N y expandir el cluster al tap
+T	1.5.4	feat/INKA-1.5.4-sync-markers-with-filters	Sincronizar los marcadores con los filtros de Home
+H	1.6	-	Card preview flotante
+T	1.6.1	feat/INKA-1.6.1-artist-preview-card	Crear ArtistPreviewCardComponent
+T	1.6.2	feat/INKA-1.6.2-preview-card-enter-dismiss	Animar la entrada y el cierre de la card
+T	1.6.3	feat/INKA-1.6.3-preview-card-navigation	Navegar al catalogo desde la card
+E	2	-	Catalogo de Tatuador
+H	2.1	-	Shell del perfil y header con portada
+T	2.1.1	feat/INKA-2.1.1-artist-catalog-scaffold	Crear ArtistCatalogPage con su ruta lazy
+T	2.1.2	feat/INKA-2.1.2-artist-route-resolution	Resolver el artista por id y manejar el 404
+T	2.1.3	feat/INKA-2.1.3-cover-header-gradient	Construir el header de portada con degradado
+T	2.1.4	feat/INKA-2.1.4-catalog-back-button	Agregar el boton de volver
+H	2.2	-	Bloque de identidad
+T	2.2.1	feat/INKA-2.2.1-artist-identity-block	Mostrar nombre zona precio y rating
+T	2.2.2	feat/INKA-2.2.2-identity-style-chips	Reutilizar los chips de estilo en el perfil
+H	2.3	-	Filtro pills del portafolio
+T	2.3.1	feat/INKA-2.3.1-portfolio-filter-pills	Derivar las pills de filtro del portafolio
+T	2.3.2	feat/INKA-2.3.2-portfolio-filter-signal	Filtrar el grid con un computed
+H	2.4	-	Grid masonry del portafolio
+T	2.4.1	feat/INKA-2.4.1-masonry-grid-layout	Maquetar el grid masonry de 2 columnas
+T	2.4.2	perf/INKA-2.4.2-lazy-images-aspect-ratio	Cargar las imagenes en lazy sin layout shift
+T	2.4.3	feat/INKA-2.4.3-portfolio-skeletons	Mostrar skeletons durante la carga
+H	2.5	-	Lightbox de imagen completa
+T	2.5.1	feat/INKA-2.5.1-lightbox-overlay	Abrir el lightbox a pantalla completa
+T	2.5.2	feat/INKA-2.5.2-lightbox-swipe-nav	Navegar entre imagenes con swipe
+T	2.5.3	feat/INKA-2.5.3-lightbox-back-button-close	Cerrar el lightbox con el boton back
+H	2.6	-	Disponibilidad y CTA Contactar
+T	2.6.1	feat/INKA-2.6.1-availability-pill	Mostrar la pill de disponibilidad
+T	2.6.2	feat/INKA-2.6.2-contact-cta-button	Agregar el CTA fijo Contactar
+T	2.6.3	feat/INKA-2.6.3-whatsapp-instagram-deeplinks	Enlazar a WhatsApp e Instagram
+E	3	-	Release v0.1.0
+H	3.1	-	QA de integracion
+T	3.1.1	test/INKA-3.1.1-integration-qa-checklist	Ejecutar el checklist de QA de integracion
+H	3.2	-	Plataformas nativas iOS y Android
+T	3.2.1	chore/INKA-3.2.1-capacitor-add-android	Agregar la plataforma Android con Capacitor
+T	3.2.2	chore/INKA-3.2.2-capacitor-add-ios	Agregar la plataforma iOS con Capacitor
+T	3.2.3	ci/INKA-3.2.3-fix-release-workflow-native	Definir la firma de APK e IPA en release.yml
+H	3.3	-	Corte de release
+T	3.3.1	chore/INKA-3.3.1-version-bump-changelog	Actualizar la version y el CHANGELOG
+T	3.3.2	release/0.1.0	Cortar la release 0.1.0 y taguear v0.1.0
