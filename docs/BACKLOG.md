@@ -26,10 +26,9 @@ Home y Catálogo hay que convertirlo en Inka y dejar el pipeline verde. De ahí 
 
 Tres bloqueos operativos detectados:
 
-1. **CI roto para PRs.** `ci.yml` exige coverage ≥80% y no existe ni un `.spec.ts`.
-   Hoy el gate pasa en verde solo porque Jest no encuentra ninguna suite y nunca llega a
-   evaluar el threshold — en cuanto entre el primer `.spec.ts` empieza a medir de verdad.
-   Lo resuelve HU-0.2.
+1. ~~**CI roto para PRs.**~~ Resuelto en HU-0.2. El gate pasaba en verde solo porque Jest no
+   encontraba ninguna suite y nunca llegaba a evaluar el threshold. Hoy mide de verdad:
+   2 suites, 56 tests y 88.44% de statements en `develop`.
 2. ~~**Cuenta de `gh` sin permiso de escritura.**~~ Resuelto: `gh auth login` con la cuenta
    `cosyfps` (`admin: true`). El remote va por SSH (`github-personal`).
 3. ~~**No existía `develop`.**~~ Resuelto en T-0.1.2.
@@ -419,45 +418,69 @@ reutiliza los issues existentes en vez de duplicarlos. Usa `--dry-run` para simu
 | 03  | T-0.1.4 | `develop` (directo)                                | ✅                                            |
 | 04  | T-0.1.5 | `develop` (directo)                                | ✅                                            |
 | 05  | T-0.1.6 | `develop` (directo)                                | ✅                                            |
-| 06  | T-0.1.8 | PR `develop` → `main`                              | 🔄 PR #2 — arrastra tambien T-0.4.3           |
+| 06  | T-0.1.8 | PR `develop` → `main`                              | ✅ PR #2 — arrastra tambien T-0.4.3           |
 | 07  | T-0.1.3 | _(sin PR)_ branch protection                       | ✅ `ci-gate` + PR obligatorio, 0 aprobaciones |
 | 08  | T-0.1.7 | _(sin PR)_ crear issues                            | ✅ Épica 0 creada como issues #4 a #31        |
-| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | 🔄 PR #32 — +3 bugs no documentados           |
-| 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | 🔄 PR #33 — 22 tests                          |
-| 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | 🔄 PR #34 — 34 tests                          |
-| 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | 🔄 PR #35 — mergea el ultimo                  |
-| 13  | T-0.3.1 | `refactor/INKA-0.3.1-inka-token-rename`            | ⬜                                            |
+| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | ✅ PR #32 — +3 bugs no documentados           |
+| 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | ✅ PR #33 — 22 tests                          |
+| 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | ✅ PR #36 — 34 tests (#34 se cerró y rehízo)  |
+| 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | ✅ PR #35 — tope del stack                    |
+| 13  | T-0.3.1 | `refactor/INKA-0.3.1-inka-token-rename`            | 🔄 en curso — desbloqueado                    |
 | 14  | T-0.3.2 | `feat/INKA-0.3.2-inka-color-values`                | ⬜                                            |
 | 15  | T-0.4.1 | `chore/INKA-0.4.1-rename-angular-project`          | ⬜                                            |
-| —   | T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`            | 🔄 PR #3 — prerrequisito de HU-0.2            |
-| 16  | T-0.4.3 | _(sin rama)_ `README.md` dentro del PR #2          | 🔄 adelantado, viaja en el PR #2              |
+| —   | T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`            | ✅ PR #3 — prerrequisito de HU-0.2            |
+| 16  | T-0.4.3 | _(sin rama)_ `README.md` dentro del PR #2          | ✅ adelantado, viajó en el PR #2              |
 | —   | T-0.4.4 | _(sin PR)_ `CLAUDE.md` local                       | ✅ se mantiene a mano                         |
 | 17  | T-0.5.1 | `refactor/INKA-0.5.1-split-mixins-from-components` | ⬜                                            |
 | 18  | T-0.5.2 | `fix/INKA-0.5.2-dedupe-state-divider-classes`      | ⬜                                            |
 | 19  | T-0.5.3 | `refactor/INKA-0.5.3-scss-use-migration`           | ⬜                                            |
 | 20  | T-0.5.4 | `feat/INKA-0.5.4-self-host-inter-font`             | ⬜                                            |
 
-#### Orden de merge de HU-0.2
+#### Cómo se integró HU-0.2 _(histórico — cerrado el 2026-08-13)_
 
-Los cuatro PRs de la historia van **apilados**: cada rama nace de la anterior porque todas
-necesitan la configuración de Jest de T-0.2.1. GitHub reapunta cada PR a `develop` a medida
-que el anterior mergea.
+Los PRs de la historia fueron **apilados**: todas las ramas nacen de `ci/INKA-0.2.1` porque
+todas necesitan su configuración de Jest. No se reapuntaron a `develop` uno por uno; el
+stack se colapsó de arriba hacia abajo y entró a `develop` en un solo merge, el de #32.
 
 ```
-#32 (T-0.2.1) → #33 (T-0.2.2) → #34 (T-0.2.3) → #3 (T-0.4.2) → #35 (T-0.2.4)
+develop ← #32 (T-0.2.1)  ← #33 (T-0.2.2)
+                         ← #36 (T-0.2.3) ← #35 (T-0.2.4)
+develop ← #3  (T-0.4.2)
 ```
 
-Dos restricciones que no son negociables:
+Orden real de merge: **#33 → #3 → #35 → #36 → #32**. Entre #36 y #32 se sincronizó `develop`
+—ya con #3 dentro— hacia la rama de la historia, para que el coverage del stack se midiera
+sin las páginas `trainer/`.
 
-1. **#3 entra antes que #35.** `dashboard.page.ts` y `trainer-layout.page.ts` suman 235
-   statements sin un solo test. Con ellos dentro del denominador la historia se queda en
-   75.86% de statements; sin ellos sube a 88.44% y las 4 métricas pasan.
-2. **#35 mergea el último.** Endurece el guard de coverage para que un reporte vacío sea
-   fallo explícito. Si entra antes que los specs, bloquea `develop` por completo.
+Las dos restricciones se cumplieron:
 
-Ningún PR de la cadena puede pasar `ci-gate` por sí solo: la historia se integra como
-bloque. Es la excepción prevista en `CONTRIBUTING.md` para historias que levantan la
-cobertura desde cero.
+1. **#3 entró antes que #35.** `dashboard.page.ts` y `trainer-layout.page.ts` sumaban 235
+   statements sin un solo test. Con ellos dentro del denominador la historia se quedaba en
+   75.86% de statements; sin ellos subió a 88.44% y las 4 métricas pasaron.
+2. **#35 quedó en el tope del stack**, así que su endurecimiento del guard de coverage llegó
+   a `develop` junto con los specs y no antes.
+
+Ningún PR de la cadena podía pasar `ci-gate` por sí solo: la historia se integró como
+bloque. Fue la excepción prevista en `CONTRIBUTING.md` para historias que levantan la
+cobertura desde cero. **A partir de HU-0.3 la excepción ya no aplica**: hay cobertura real,
+y cada PR debe pasar `ci-gate` por sí mismo.
+
+**Línea base tras HU-0.2** (medida en `develop@b71c893`):
+
+| Métrica    | %     |
+| ---------- | ----- |
+| Statements | 88.44 |
+| Branches   | 92.68 |
+| Functions  | 90.00 |
+| Lines      | 89.47 |
+
+2 suites, 56 tests. `page-state.component.ts` queda en 0%: tras eliminar `trainer/` no tiene
+consumidores. Es deuda conocida, no un hueco nuevo.
+
+#### PRs descartados
+
+- **#34** (T-0.2.3) se cerró sin mergear y se rehízo como **#36**, con base corregida a
+  `ci/INKA-0.2.1-jest-config-fix`. El tablero apuntaba a #34 por error.
 
 ### Épica 1 — Home / Mapa
 
