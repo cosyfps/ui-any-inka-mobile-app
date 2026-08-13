@@ -135,12 +135,12 @@ T-0.3.1 **no es divisible**: separar el palette de sus referencias rompe el buil
 
 ### HU-0.4 — Rebrand del proyecto y limpieza de Ñeque
 
-| Ticket  | Rama                                      | Qué hace                                                                                                                                                                                                                    |
-| ------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| T-0.4.1 | `chore/INKA-0.4.1-rename-angular-project` | `package.json` name → `ui-any-inka-mobile-app`; `angular.json` project `neque` → `inka` y `outputPath` → `dist/inka`; `capacitor.config.ts` → `appId: 'com.duocuc.inka'`, `appName: 'Inka'`, `webDir: 'dist/inka/browser'`. |
-| T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`   | Eliminar `src/app/pages/trainer/**` y sus 4 rutas (3 apuntan al mismo `DashboardPage`). Corregir el comentario "FitConnect" de `commitlint.config.js` — tercer nombre de proyecto en el repo.                               |
-| T-0.4.3 | `docs/INKA-0.4.3-readme`                  | `README.md` (hoy 0 bytes): setup, scripts, gitflow, cómo obtener el token de Mapbox.                                                                                                                                        |
-| T-0.4.4 | `docs/INKA-0.4.4-update-claude-md`        | Actualizar `CLAUDE.md`: describe el proyecto como Ñeque/trainer, documenta `--nq-*`, el prefijo de componentes compartidos `nq-` y `com.duocuc.neque`. Ver nota de abajo.                                                   |
+| Ticket  | Rama                                          | Qué hace                                                                                                                                                                                                                    |
+| ------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T-0.4.1 | `chore/INKA-0.4.1-rename-angular-project`     | `package.json` name → `ui-any-inka-mobile-app`; `angular.json` project `neque` → `inka` y `outputPath` → `dist/inka`; `capacitor.config.ts` → `appId: 'com.duocuc.inka'`, `appName: 'Inka'`, `webDir: 'dist/inka/browser'`. |
+| T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`       | Eliminar `src/app/pages/trainer/**` y sus 4 rutas (3 apuntan al mismo `DashboardPage`). Corregir el comentario "FitConnect" de `commitlint.config.js` — tercer nombre de proyecto en el repo.                               |
+| T-0.4.3 | `docs/INKA-0.4.3-readme`                      | `README.md` (hoy 0 bytes): setup, scripts, gitflow, cómo obtener el token de Mapbox.                                                                                                                                        |
+| T-0.4.4 | _(sin PR — `CLAUDE.md` está en `.gitignore`)_ | Mantener `CLAUDE.md` alineado con el estado real del repo tras cada ticket de rebrand. Es un archivo local, no versionado: no genera PR y hay que actualizarlo a mano en cada máquina. Ver nota de abajo.                   |
 
 **Nota sobre T-0.4.4.** Además del rebrand, `CLAUDE.md` tiene una sección "Formato PR" que
 apunta a Jira (`PFMX`, `jira.falabella.tech`), heredada de otro repositorio. Inka usa GitHub
@@ -331,6 +331,103 @@ activos: todo acceso indexado devuelve `T | undefined`. Modelar con eso desde el
 - **Épica 3**: al final, con las Épicas 1 y 2 integradas en `develop`.
 
 Dentro de cada historia los tickets son secuenciales salvo donde se indique.
+
+---
+
+## Tablero de ejecución
+
+Lista plana en orden de trabajo. Estados: ✅ mergeado · 🔄 PR abierto · ⬜ pendiente · 🚫 bloqueado.
+
+### Épica 0 — Fundación
+
+| #   | Ticket  | Rama                                               | Estado                                                                  |
+| --- | ------- | -------------------------------------------------- | ----------------------------------------------------------------------- |
+| 01  | T-0.1.1 | _(sin PR)_ alinear credenciales git/gh             | 🚫 parcial — `git push` OK por SSH; `gh` sigue sin permiso de escritura |
+| 02  | T-0.1.2 | _(sin PR)_ crear `develop`                         | ✅                                                                      |
+| 03  | T-0.1.4 | `develop` (directo)                                | ✅                                                                      |
+| 04  | T-0.1.5 | `develop` (directo)                                | ✅                                                                      |
+| 05  | T-0.1.6 | `develop` (directo)                                | ✅                                                                      |
+| 06  | T-0.1.8 | PR `develop` → `main`                              | 🔄                                                                      |
+| 07  | T-0.1.3 | _(sin PR)_ branch protection                       | 🚫 requiere admin en `gh`                                               |
+| 08  | T-0.1.7 | _(sin PR)_ crear issues                            | 🚫 requiere escritura en `gh`                                           |
+| 09  | T-0.2.1 | `ci/INKA-0.2.1-jest-config-fix`                    | ⬜                                                                      |
+| 10  | T-0.2.2 | `test/INKA-0.2.2-start-page-specs`                 | ⬜                                                                      |
+| 11  | T-0.2.3 | `test/INKA-0.2.3-forgot-password-specs`            | ⬜                                                                      |
+| 12  | T-0.2.4 | `ci/INKA-0.2.4-harden-ci-gate`                     | ⬜                                                                      |
+| 13  | T-0.3.1 | `refactor/INKA-0.3.1-inka-token-rename`            | ⬜                                                                      |
+| 14  | T-0.3.2 | `feat/INKA-0.3.2-inka-color-values`                | ⬜                                                                      |
+| 15  | T-0.4.1 | `chore/INKA-0.4.1-rename-angular-project`          | ⬜                                                                      |
+| —   | T-0.4.2 | `chore/INKA-0.4.2-remove-trainer-pages`            | 🔄 adelantado                                                           |
+| 16  | T-0.4.3 | `docs/INKA-0.4.3-readme`                           | ⬜                                                                      |
+| —   | T-0.4.4 | _(sin PR)_ `CLAUDE.md` local                       | ✅ se mantiene a mano                                                   |
+| 17  | T-0.5.1 | `refactor/INKA-0.5.1-split-mixins-from-components` | ⬜                                                                      |
+| 18  | T-0.5.2 | `fix/INKA-0.5.2-dedupe-state-divider-classes`      | ⬜                                                                      |
+| 19  | T-0.5.3 | `refactor/INKA-0.5.3-scss-use-migration`           | ⬜                                                                      |
+| 20  | T-0.5.4 | `feat/INKA-0.5.4-self-host-inter-font`             | ⬜                                                                      |
+
+### Épica 1 — Home / Mapa
+
+| #   | Ticket  | Rama                                          | Estado |
+| --- | ------- | --------------------------------------------- | ------ |
+| 21  | T-1.1.1 | `feat/INKA-1.1.1-tattoo-artist-model`         | ⬜     |
+| 22  | T-1.1.2 | `feat/INKA-1.1.2-mock-artists`                | ⬜     |
+| 23  | T-1.1.3 | `feat/INKA-1.1.3-artist-service`              | ⬜     |
+| 24  | T-1.2.1 | `feat/INKA-1.2.1-main-layout-shell`           | ⬜     |
+| 25  | T-1.2.2 | `feat/INKA-1.2.2-bottom-nav-tabs`             | ⬜     |
+| 26  | T-1.2.3 | `feat/INKA-1.2.3-child-routes-placeholders`   | ⬜     |
+| 27  | T-1.2.4 | `fix/INKA-1.2.4-ios-safe-area-tabs`           | ⬜     |
+| 28  | T-1.3.1 | `feat/INKA-1.3.1-home-page-scaffold`          | ⬜     |
+| 29  | T-1.3.2 | `feat/INKA-1.3.2-home-compact-header`         | ⬜     |
+| 30  | T-1.3.3 | `feat/INKA-1.3.3-style-chips-scroller`        | ⬜     |
+| 31  | T-1.3.4 | `feat/INKA-1.3.4-artist-filter-signal`        | ⬜     |
+| 32  | T-1.4.1 | `chore/INKA-1.4.1-add-mapbox-dependency`      | ⬜     |
+| 33  | T-1.4.2 | `ci/INKA-1.4.2-environment-file-replacements` | ⬜     |
+| 34  | T-1.4.3 | `feat/INKA-1.4.3-map-init-outside-zone`       | ⬜     |
+| 35  | T-1.4.4 | `feat/INKA-1.4.4-custom-map-style`            | ⬜     |
+| 36  | T-1.4.5 | `feat/INKA-1.4.5-map-loading-error-states`    | ⬜     |
+| 37  | T-1.4.6 | `perf/INKA-1.4.6-verify-lazy-chunk-budgets`   | ⬜     |
+| 38  | T-1.5.1 | `feat/INKA-1.5.1-artist-bubble-marker`        | ⬜     |
+| 39  | T-1.5.2 | `feat/INKA-1.5.2-supercluster-clustering`     | ⬜     |
+| 40  | T-1.5.3 | `feat/INKA-1.5.3-cluster-badge-zoom`          | ⬜     |
+| 41  | T-1.5.4 | `feat/INKA-1.5.4-sync-markers-with-filters`   | ⬜     |
+| 42  | T-1.6.1 | `feat/INKA-1.6.1-artist-preview-card`         | ⬜     |
+| 43  | T-1.6.2 | `feat/INKA-1.6.2-preview-card-enter-dismiss`  | ⬜     |
+| 44  | T-1.6.3 | `feat/INKA-1.6.3-preview-card-navigation`     | ⬜     |
+
+### Épica 2 — Catálogo
+
+Puede arrancar apenas cierre T-1.1.3, en paralelo a la Épica 1.
+
+| #   | Ticket  | Rama                                           | Estado |
+| --- | ------- | ---------------------------------------------- | ------ |
+| 45  | T-2.1.1 | `feat/INKA-2.1.1-artist-catalog-scaffold`      | ⬜     |
+| 46  | T-2.1.2 | `feat/INKA-2.1.2-artist-route-resolution`      | ⬜     |
+| 47  | T-2.1.3 | `feat/INKA-2.1.3-cover-header-gradient`        | ⬜     |
+| 48  | T-2.1.4 | `feat/INKA-2.1.4-catalog-back-button`          | ⬜     |
+| 49  | T-2.2.1 | `feat/INKA-2.2.1-artist-identity-block`        | ⬜     |
+| 50  | T-2.2.2 | `feat/INKA-2.2.2-identity-style-chips`         | ⬜     |
+| 51  | T-2.3.1 | `feat/INKA-2.3.1-portfolio-filter-pills`       | ⬜     |
+| 52  | T-2.3.2 | `feat/INKA-2.3.2-portfolio-filter-signal`      | ⬜     |
+| 53  | T-2.4.1 | `feat/INKA-2.4.1-masonry-grid-layout`          | ⬜     |
+| 54  | T-2.4.2 | `perf/INKA-2.4.2-lazy-images-aspect-ratio`     | ⬜     |
+| 55  | T-2.4.3 | `feat/INKA-2.4.3-portfolio-skeletons`          | ⬜     |
+| 56  | T-2.5.1 | `feat/INKA-2.5.1-lightbox-overlay`             | ⬜     |
+| 57  | T-2.5.2 | `feat/INKA-2.5.2-lightbox-swipe-nav`           | ⬜     |
+| 58  | T-2.5.3 | `feat/INKA-2.5.3-lightbox-back-button-close`   | ⬜     |
+| 59  | T-2.6.1 | `feat/INKA-2.6.1-availability-pill`            | ⬜     |
+| 60  | T-2.6.2 | `feat/INKA-2.6.2-contact-cta-button`           | ⬜     |
+| 61  | T-2.6.3 | `feat/INKA-2.6.3-whatsapp-instagram-deeplinks` | ⬜     |
+
+### Épica 3 — Release v0.1.0
+
+| #   | Ticket  | Rama                                        | Estado |
+| --- | ------- | ------------------------------------------- | ------ |
+| 62  | T-3.1.1 | `test/INKA-3.1.1-integration-qa-checklist`  | ⬜     |
+| 63  | T-3.2.1 | `chore/INKA-3.2.1-capacitor-add-android`    | ⬜     |
+| 64  | T-3.2.2 | `chore/INKA-3.2.2-capacitor-add-ios`        | ⬜     |
+| 65  | T-3.2.3 | `ci/INKA-3.2.3-fix-release-workflow-native` | ⬜     |
+| 66  | T-3.3.1 | `chore/INKA-3.3.1-version-bump-changelog`   | ⬜     |
+| 67  | T-3.3.2 | `release/0.1.0` → `main` + tag `v0.1.0`     | ⬜     |
 
 ---
 
