@@ -136,18 +136,7 @@ jobs:
           CI: true
 
       - name: Verify coverage threshold
-        run: |
-          node -e "
-            const d = require('./coverage/coverage-summary.json');
-            const t = d.total;
-            const pct = (t.lines.pct + t.statements.pct + t.functions.pct + t.branches.pct) / 4;
-            console.log('Coverage promedio: ' + pct.toFixed(2) + '%');
-            if (pct < 80) {
-              console.error('FAIL: Coverage ' + pct.toFixed(2) + '% < 80% requerido');
-              process.exit(1);
-            }
-            console.log('OK: Coverage ' + pct.toFixed(2) + '% >= 80%');
-          "
+        run: node scripts/verify-coverage.js
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -210,8 +199,10 @@ jobs:
         run: |
           JOBS_STATUS="${{ join(needs.*.result, ',') }}"
           echo "Estado de jobs: $JOBS_STATUS"
-          if echo "$JOBS_STATUS" | grep -qE '(failure|cancelled)'; then
-            echo "FAIL: Uno o mas jobs fallaron. PR bloqueado."
+          # 'skipped' cuenta como fallo: un job saltado no valido nada, y sin el la
+          # cadena de dependencias deja pasar PRs sin lint, tests ni build.
+          if echo "$JOBS_STATUS" | grep -qE '(failure|cancelled|skipped)'; then
+            echo "FAIL: Uno o mas jobs no terminaron en exito. PR bloqueado."
             exit 1
           fi
           echo "OK: Todos los jobs pasaron. Listo para merge."
