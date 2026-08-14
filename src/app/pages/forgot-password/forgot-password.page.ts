@@ -39,8 +39,8 @@ const OTP_LENGTH = 6;
 
             <div class="illustration">
               <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="100" cy="80" r="60" fill="rgba(var(--nq-primary-rgb),0.08)" />
-                <circle cx="100" cy="80" r="40" fill="rgba(var(--nq-primary-rgb),0.12)" />
+                <circle cx="100" cy="80" r="60" fill="rgba(var(--inka-primary-rgb),0.08)" />
+                <circle cx="100" cy="80" r="40" fill="rgba(var(--inka-primary-rgb),0.12)" />
                 <rect
                   x="78"
                   y="62"
@@ -48,20 +48,20 @@ const OTP_LENGTH = 6;
                   height="30"
                   rx="4"
                   fill="none"
-                  stroke="var(--nq-primary)"
+                  stroke="var(--inka-primary)"
                   stroke-width="2"
                 />
                 <path
                   d="M78 66l22 14 22-14"
                   fill="none"
-                  stroke="var(--nq-primary)"
+                  stroke="var(--inka-primary)"
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
-                <circle cx="100" cy="105" r="4" fill="var(--nq-primary)" opacity="0.4" />
-                <circle cx="90" cy="112" r="2.5" fill="var(--nq-primary)" opacity="0.25" />
-                <circle cx="112" cy="110" r="3" fill="var(--nq-primary)" opacity="0.3" />
+                <circle cx="100" cy="105" r="4" fill="var(--inka-primary)" opacity="0.4" />
+                <circle cx="90" cy="112" r="2.5" fill="var(--inka-primary)" opacity="0.25" />
+                <circle cx="112" cy="110" r="3" fill="var(--inka-primary)" opacity="0.3" />
               </svg>
             </div>
 
@@ -73,9 +73,15 @@ const OTP_LENGTH = 6;
 
             <form [formGroup]="emailForm" (ngSubmit)="onSendCode()" novalidate class="email-form">
               <div class="field" [class.has-error]="emailTouched() && emailError()">
-                <label class="nq-field-label" for="fp-email">Email</label>
-                <div class="nq-field-input">
-                  <svg class="nq-field-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <label class="inka-field-label" for="fp-email">Email</label>
+                <div class="inka-field-input">
+                  <svg
+                    class="inka-field-icon"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
                     <rect
                       x="2"
                       y="4"
@@ -108,7 +114,7 @@ const OTP_LENGTH = 6;
                   />
                   @if (emailTouched() && emailError()) {
                     <svg
-                      class="nq-field-error-icon"
+                      class="inka-field-error-icon"
                       lucideCircleAlert
                       [size]="18"
                       [strokeWidth]="1.8"
@@ -116,7 +122,7 @@ const OTP_LENGTH = 6;
                   }
                 </div>
                 @if (emailTouched() && emailError()) {
-                  <span class="nq-field-error" id="fp-email-error">{{ emailError() }}</span>
+                  <span class="inka-field-error" id="fp-email-error">{{ emailError() }}</span>
                 }
               </div>
 
@@ -145,8 +151,8 @@ const OTP_LENGTH = 6;
 
             <div class="illustration">
               <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="100" cy="80" r="60" fill="rgba(var(--nq-primary-rgb),0.08)" />
-                <circle cx="100" cy="80" r="40" fill="rgba(var(--nq-primary-rgb),0.12)" />
+                <circle cx="100" cy="80" r="60" fill="rgba(var(--inka-primary-rgb),0.08)" />
+                <circle cx="100" cy="80" r="40" fill="rgba(var(--inka-primary-rgb),0.12)" />
                 <rect
                   x="75"
                   y="60"
@@ -154,16 +160,16 @@ const OTP_LENGTH = 6;
                   height="36"
                   rx="5"
                   fill="none"
-                  stroke="var(--nq-primary)"
+                  stroke="var(--inka-primary)"
                   stroke-width="2"
                 />
                 <path
                   d="M85 80h6M95 80h6M105 80h6"
-                  stroke="var(--nq-primary)"
+                  stroke="var(--inka-primary)"
                   stroke-width="3"
                   stroke-linecap="round"
                 />
-                <path d="M100 55l-3-6h6l-3 6z" fill="var(--nq-primary)" opacity="0.5" />
+                <path d="M100 55l-3-6h6l-3 6z" fill="var(--inka-primary)" opacity="0.5" />
               </svg>
             </div>
 

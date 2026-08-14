@@ -4,7 +4,7 @@ import { LucideAlertCircle, LucideInbox, LucideWifi, LucideRefreshCw } from '@lu
 export type PageStateType = 'loading' | 'error' | 'empty' | 'offline';
 
 @Component({
-  selector: 'nq-page-state',
+  selector: 'inka-page-state',
   standalone: true,
   imports: [LucideAlertCircle, LucideInbox, LucideWifi, LucideRefreshCw],
   template: `
@@ -13,28 +13,28 @@ export type PageStateType = 'loading' | 'error' | 'empty' | 'offline';
         <div class="state">
           <div class="skeleton-group">
             <div class="skeleton-header">
-              <div class="nq-skeleton-circle" style="width:44px;height:44px"></div>
+              <div class="inka-skeleton-circle" style="width:44px;height:44px"></div>
               <div style="flex:1;display:flex;flex-direction:column;gap:8px">
-                <div class="nq-skeleton-text lg"></div>
-                <div class="nq-skeleton-text sm"></div>
+                <div class="inka-skeleton-text lg"></div>
+                <div class="inka-skeleton-text sm"></div>
               </div>
             </div>
-            <div class="nq-skeleton-card"></div>
+            <div class="inka-skeleton-card"></div>
             <div class="skeleton-row">
-              <div class="nq-skeleton-card" style="height:100px"></div>
-              <div class="nq-skeleton-card" style="height:100px"></div>
+              <div class="inka-skeleton-card" style="height:100px"></div>
+              <div class="inka-skeleton-card" style="height:100px"></div>
             </div>
-            <div class="nq-skeleton-card" style="height:80px"></div>
+            <div class="inka-skeleton-card" style="height:80px"></div>
           </div>
         </div>
       }
       @case ('error') {
-        <div class="nq-state">
-          <div class="nq-state-icon error">
+        <div class="inka-state">
+          <div class="inka-state-icon error">
             <svg lucideAlertCircle [size]="24" [strokeWidth]="1.5"></svg>
           </div>
-          <span class="nq-state-title">{{ title || 'Algo salió mal' }}</span>
-          <span class="nq-state-desc">{{
+          <span class="inka-state-title">{{ title || 'Algo salió mal' }}</span>
+          <span class="inka-state-desc">{{
             message || 'No pudimos cargar la información. Intenta de nuevo.'
           }}</span>
           @if (showRetry) {
@@ -46,21 +46,23 @@ export type PageStateType = 'loading' | 'error' | 'empty' | 'offline';
         </div>
       }
       @case ('empty') {
-        <div class="nq-state">
-          <div class="nq-state-icon">
+        <div class="inka-state">
+          <div class="inka-state-icon">
             <svg lucideInbox [size]="24" [strokeWidth]="1.5"></svg>
           </div>
-          <span class="nq-state-title">{{ title || 'Sin datos' }}</span>
-          <span class="nq-state-desc">{{ message || 'Aún no hay información para mostrar.' }}</span>
+          <span class="inka-state-title">{{ title || 'Sin datos' }}</span>
+          <span class="inka-state-desc">{{
+            message || 'Aún no hay información para mostrar.'
+          }}</span>
         </div>
       }
       @case ('offline') {
-        <div class="nq-state">
-          <div class="nq-state-icon warning">
+        <div class="inka-state">
+          <div class="inka-state-icon warning">
             <svg lucideWifi [size]="24" [strokeWidth]="1.5"></svg>
           </div>
-          <span class="nq-state-title">Sin conexión</span>
-          <span class="nq-state-desc">Revisa tu conexión a internet e intenta de nuevo.</span>
+          <span class="inka-state-title">Sin conexión</span>
+          <span class="inka-state-desc">Revisa tu conexión a internet e intenta de nuevo.</span>
           @if (showRetry) {
             <button class="retry-btn" (click)="onRetry()">
               <svg lucideRefreshCw [size]="16" [strokeWidth]="2"></svg>
@@ -92,31 +94,31 @@ export type PageStateType = 'loading' | 'error' | 'empty' | 'offline';
         gap: 12px;
       }
       .error {
-        background: rgba(var(--nq-danger-rgb), 0.06);
-        color: var(--nq-danger);
+        background: rgba(var(--inka-danger-rgb), 0.06);
+        color: var(--inka-danger);
       }
       .warning {
-        background: rgba(var(--nq-warning-rgb), 0.06);
-        color: var(--nq-warning);
+        background: rgba(var(--inka-warning-rgb), 0.06);
+        color: var(--inka-warning);
       }
       .retry-btn {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         padding: 10px 20px;
-        border-radius: var(--nq-radius-sm);
-        background: var(--nq-surface);
-        border: 1px solid var(--nq-border-solid);
-        color: var(--nq-text);
-        font-family: var(--nq-font-family);
+        border-radius: var(--inka-radius-sm);
+        background: var(--inka-surface);
+        border: 1px solid var(--inka-border-solid);
+        color: var(--inka-text);
+        font-family: var(--inka-font-family);
         font-size: 14px;
         font-weight: 600;
         cursor: pointer;
         margin-top: 8px;
-        transition: background var(--nq-transition);
+        transition: background var(--inka-transition);
       }
       .retry-btn:active {
-        background: var(--nq-surface-2);
+        background: var(--inka-surface-2);
       }
     `,
   ],

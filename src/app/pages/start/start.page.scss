@@ -20,9 +20,9 @@
   justify-content: center;
   background: linear-gradient(
     180deg,
-    var(--nq-gradient-start) 0%,
-    var(--nq-gradient-mid) 55%,
-    var(--nq-gradient-end) 100%
+    var(--inka-gradient-start) 0%,
+    var(--inka-gradient-mid) 55%,
+    var(--inka-gradient-end) 100%
   );
   padding: 100px 20px 60px;
 }
@@ -40,7 +40,7 @@
   justify-content: space-between;
   padding: 120px 28px 40px;
   text-align: center;
-  background: var(--nq-bg);
+  background: var(--inka-bg);
   border-radius: 32px 32px 0 0;
   margin-top: -32px;
   position: relative;
@@ -62,27 +62,27 @@
 .title {
   font-size: 28px;
   font-weight: 700;
-  color: var(--nq-text);
+  color: var(--inka-text);
   margin: 0 0 12px;
   letter-spacing: -0.3px;
-  text-shadow: 0 2px 12px rgba(var(--nq-primary-rgb), 0.18);
+  text-shadow: 0 2px 12px rgba(var(--inka-primary-rgb), 0.18);
 }
 
 .subtitle {
   font-size: 14px;
   line-height: 1.6;
-  color: var(--nq-text-secondary);
+  color: var(--inka-text-secondary);
   margin: 0 0 36px;
 }
 
 .btn-login {
-  @include nq-btn-gradient;
+  @include inka-btn-gradient;
   max-width: 300px;
 }
 
 .help-text {
   font-size: 13px;
-  color: var(--nq-text-muted);
+  color: var(--inka-text-muted);
   margin: 24px 0 0;
 }
 
@@ -109,7 +109,7 @@
 .form-section {
   height: 100%;
   padding: 24px 24px 32px;
-  background: var(--nq-bg);
+  background: var(--inka-bg);
   border-radius: 32px 32px 0 0;
   overflow: hidden;
 }
@@ -124,17 +124,17 @@
 .form-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--nq-text);
+  color: var(--inka-text);
   margin: 0;
-  text-shadow: 0 2px 12px rgba(var(--nq-primary-rgb), 0.12);
+  text-shadow: 0 2px 12px rgba(var(--inka-primary-rgb), 0.12);
 }
 
 .back-btn {
-  @include nq-nav-back;
+  @include inka-nav-back;
 }
 
 .field {
-  @include nq-field-base;
+  @include inka-field-base;
 }
 
 .toggle-password {
@@ -146,7 +146,7 @@
   height: 44px;
   border: none;
   background: transparent;
-  color: var(--nq-text-muted);
+  color: var(--inka-text-muted);
   cursor: pointer;
   padding: 0;
   margin-right: -8px;
@@ -154,11 +154,11 @@
   -webkit-tap-highlight-color: transparent;
 
   &:active {
-    background: rgba(var(--nq-primary-rgb), 0.08);
+    background: rgba(var(--inka-primary-rgb), 0.08);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--nq-primary);
+    outline: 2px solid var(--inka-primary);
     outline-offset: 2px;
   }
 }
@@ -178,7 +178,7 @@
     gap: 6px;
     font-size: 12px;
     font-weight: 500;
-    color: var(--nq-danger);
+    color: var(--inka-danger);
     transition: color 0.2s ease;
 
     svg {
@@ -186,7 +186,7 @@
     }
 
     &.met {
-      color: var(--nq-success);
+      color: var(--inka-success);
     }
   }
 }
@@ -200,8 +200,8 @@
 .forgot-link {
   font-size: 13px;
   font-weight: 500;
-  font-family: var(--nq-font-family);
-  color: var(--nq-primary);
+  font-family: var(--inka-font-family);
+  color: var(--inka-primary);
   background: none;
   border: none;
   cursor: pointer;
@@ -213,13 +213,13 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--nq-primary);
+    outline: 2px solid var(--inka-primary);
     outline-offset: 2px;
   }
 }
 
 .btn-submit {
-  @include nq-btn-gradient;
+  @include inka-btn-gradient;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -234,13 +234,13 @@
 }
 
 .btn-spinner {
-  animation: nq-spin 0.8s linear infinite;
+  animation: inka-spin 0.8s linear infinite;
 }
 
 .form-help-text {
   text-align: center;
   font-size: 12px;
   line-height: 1.5;
-  color: var(--nq-text-muted);
+  color: var(--inka-text-muted);
   margin: 28px 0 0;
 }

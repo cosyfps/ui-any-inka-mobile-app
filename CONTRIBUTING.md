@@ -196,7 +196,7 @@ Archivos en `kebab-case` con sufijo de tipo: `.page.ts`, `.component.ts`, `.serv
 | Interfaces y types          | `PascalCase` (`TattooArtist`, `TattooStyle`) |
 | Variables y propiedades     | `camelCase`                                  |
 | Selector de página          | prefijo `app-` (`app-artist-catalog`)        |
-| Selector de shared reusable | prefijo `nq-` (pasa a `inka-` en T-0.3.1)    |
+| Selector de shared reusable | prefijo `inka-` (`inka-page-state`)          |
 
 ### Normalización de strings
 

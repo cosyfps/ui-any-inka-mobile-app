@@ -14,19 +14,19 @@
 @import './app/shared/theme/components';
 
 :root {
-  --ion-color-primary: var(--nq-primary);
-  --ion-color-primary-rgb: var(--nq-primary-rgb);
+  --ion-color-primary: var(--inka-primary);
+  --ion-color-primary-rgb: var(--inka-primary-rgb);
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: var(--nq-primary-dark);
-  --ion-color-primary-tint: var(--nq-primary-light);
+  --ion-color-primary-shade: var(--inka-primary-dark);
+  --ion-color-primary-tint: var(--inka-primary-light);
 
   --ion-color-success: #2e7d32;
   --ion-color-warning: #f57f17;
 
-  --ion-font-family: var(--nq-font-family);
-  --ion-background-color: var(--nq-bg);
-  --ion-text-color: var(--nq-text);
+  --ion-font-family: var(--inka-font-family);
+  --ion-background-color: var(--inka-bg);
+  --ion-text-color: var(--inka-text);
 }
 
 html {
@@ -35,7 +35,7 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--nq-font-family);
+  font-family: var(--inka-font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none;
@@ -52,10 +52,10 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    font-family: var(--nq-font-family);
+    font-family: var(--inka-font-family);
     font-size: 16px;
     font-weight: 600;
-    color: var(--nq-text-secondary);
+    color: var(--inka-text-secondary);
     text-align: center;
     padding: 24px;
   }
